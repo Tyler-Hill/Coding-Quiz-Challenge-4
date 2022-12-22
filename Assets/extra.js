@@ -1,7 +1,3 @@
-//global variables
-let startQuizButton = document.querySelector("#startQuiz");
-let saveScore = document.querySelector("#saveInitials");
-//let viewScores;
 const quizQuestions = [
   {
     question: "Question 1 goes here.",
@@ -44,20 +40,3 @@ const quizQuestions = [
     answer: "Choice 3 goes here.",
   },
 ];
-
-//functions
-function startQuiz() {
-  alert("I started the game");
-  //bring up question 1
-  let title = document.createElement("h2");
-  title.textContent = "Who is the best magician?";
-  questionDiv.appendChild(title);
-  //add four answer options
-  let btnOne = document.createElement("button");
-
-  //make clickable
-}
-
-//function calls
-
-startQuizButton.addEventListener("click", startQuiz);
