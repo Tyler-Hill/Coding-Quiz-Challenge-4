@@ -7,8 +7,6 @@ let buttonOne = document.querySelector("#btnOne");
 let buttonTwo = document.querySelector("#btnTwo");
 let buttonThree = document.querySelector("#btnThree");
 let buttonFour = document.querySelector("#btnFour");
-let buttons = document.getElementsByTagName("button");
-let buttonsCount = buttons.length;
 
 //let viewScores;
 const quizQuestions = [
@@ -53,33 +51,35 @@ const quizQuestions = [
     answer: "Choice 4 goes here.",
   },
 ];
+let quizQuestionsCount = quizQuestions.length;
 
 //functions
 function startQuiz() {
   alert("I started the game");
-  //bring up question 1
-  questionTitle.append(quizQuestions[0].question);
-  //add four answer options
-  let btnOne = quizQuestions[0].choice1;
-  let btnTwo = quizQuestions[0].choice2;
-  let btnThree = quizQuestions[0].choice3;
-  let btnFour = quizQuestions[0].choice4;
-  buttonOne.append(btnOne);
-  buttonTwo.append(btnTwo);
-  buttonThree.append(btnThree);
-  buttonFour.append(btnFour);
-  buttonOne.onclick = function () {
-    console.log("I clicked button 1");
-  };
-  buttonTwo.onclick = function () {
-    console.log("I clicked button 2");
-  };
-  buttonThree.onclick = function () {
-    console.log("I clicked button 3");
-  };
-  buttonFour.onclick = function () {
-    console.log("I clicked button 4");
-  };
+  for (let i = 0; i < quizQuestionsCount; i += 1) {
+    questionTitle.append(quizQuestions[i].question);
+    //add four answer options
+    let btnOne = quizQuestions[i].choice1;
+    let btnTwo = quizQuestions[i].choice2;
+    let btnThree = quizQuestions[i].choice3;
+    let btnFour = quizQuestions[i].choice4;
+    buttonOne.append(btnOne);
+    buttonTwo.append(btnTwo);
+    buttonThree.append(btnThree);
+    buttonFour.append(btnFour);
+    buttonOne.onclick = function () {
+      console.log("I clicked button 1");
+    };
+    buttonTwo.onclick = function () {
+      console.log("I clicked button 2");
+    };
+    buttonThree.onclick = function () {
+      console.log("I clicked button 3");
+    };
+    buttonFour.onclick = function () {
+      console.log("I clicked button 4");
+    };
+  }
 
   //make clickable
 }
