@@ -1,13 +1,7 @@
 //global variables
 let startQuizButton = document.querySelector("#startQuiz");
 let saveScore = document.querySelector("#saveInitials");
-let questionTitle = document.querySelector("#question");
-let buttonGrid = document.querySelector("#btnGrid");
-let buttonOne = document.querySelector("#btnOne");
-let buttonTwo = document.querySelector("#btnTwo");
-let buttonThree = document.querySelector("#btnThree");
-let buttonFour = document.querySelector("#btnFour");
-
+let qDiv = document.querySelector("#questions");
 //let viewScores;
 const quizQuestions = [
   {
@@ -51,37 +45,60 @@ const quizQuestions = [
     answer: "Choice 4 goes here.",
   },
 ];
-let quizQuestionsCount = quizQuestions.length;
+let quizQuestionsIndex = 1;
 
 //functions
 function startQuiz() {
   alert("I started the game");
-  for (let i = 0; i < quizQuestionsCount; i += 1) {
-    questionTitle.append(quizQuestions[i].question);
-    //add four answer options
-    let btnOne = quizQuestions[i].choice1;
-    let btnTwo = quizQuestions[i].choice2;
-    let btnThree = quizQuestions[i].choice3;
-    let btnFour = quizQuestions[i].choice4;
-    buttonOne.append(btnOne);
-    buttonTwo.append(btnTwo);
-    buttonThree.append(btnThree);
-    buttonFour.append(btnFour);
-    buttonOne.onclick = function () {
-      console.log("I clicked button 1");
-    };
-    buttonTwo.onclick = function () {
-      console.log("I clicked button 2");
-    };
-    buttonThree.onclick = function () {
-      console.log("I clicked button 3");
-    };
-    buttonFour.onclick = function () {
-      console.log("I clicked button 4");
-    };
-  }
-
-  //make clickable
+  createButtons(0);
 }
 
+function createButtons(i) {
+  qDiv.innerHTML = "";
+  let title = document.createElement("h2");
+  title.textContent = quizQuestions[i].question;
+  qDiv.appendChild(title);
+
+  let buttonOne = document.createElement("button");
+  buttonOne.textContent = quizQuestions[i].choice1;
+  buttonOne.dataset.answer = quizQuestions[i].answer;
+  qDiv.appendChild(buttonOne);
+
+  let buttonTwo = document.createElement("button");
+  buttonTwo.textContent = quizQuestions[i].choice2;
+  buttonTwo.dataset.answer = quizQuestions[i].answer;
+  qDiv.appendChild(buttonTwo);
+
+  let buttonThree = document.createElement("button");
+  buttonThree.textContent = quizQuestions[i].choice3;
+  buttonThree.dataset.answer = quizQuestions[i].answer;
+  qDiv.appendChild(buttonThree);
+
+  let buttonFour = document.createElement("button");
+  buttonFour.textContent = quizQuestions[i].choice4;
+  buttonFour.dataset.answer = quizQuestions[i].answer;
+  qDiv.appendChild(buttonFour);
+}
+// Remove buttons function
+// function removeButtons() {
+//   qDiv.removeChild();
+// }
+
 startQuizButton.addEventListener("click", startQuiz);
+qDiv.addEventListener("click", function (event) {
+  console.log(event.target);
+  let choice = event.target.innerHTML;
+  let answer = event.target.dataset.answer;
+  if (choice === answer) {
+    alert("You chose the right answer");
+    createButtons(quizQuestionsIndex);
+    quizQuestionsIndex++;
+    // removeButtons();
+    //if quizQuestionsIndex > length == game over!
+  } else {
+    alert("You chose the wrong answer");
+    createButtons(quizQuestionsIndex);
+    quizQuestionsIndex++;
+    // removeButtons();
+  }
+});
