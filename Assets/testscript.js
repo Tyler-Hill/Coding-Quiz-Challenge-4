@@ -2,7 +2,6 @@
 let startQuizButton = document.querySelector("#startQuiz");
 let saveScore = document.querySelector("#saveInitials");
 let qDiv = document.querySelector("#questions");
-
 //let viewScores;
 const quizQuestions = [
   {
@@ -46,50 +45,54 @@ const quizQuestions = [
     answer: "Choice 4 goes here.",
   },
 ];
-let quizQuestionsCount = 0;
+let quizQuestionsIndex = 1;
 
 //functions
 function startQuiz() {
   alert("I started the game");
-  for (let i = 0; i <= quizQuestionsCount; i += 1) {
-    let title = document.createElement("h2");
-    title.textContent = quizQuestions[i].question;
-    qDiv.appendChild(title);
+  createButtons(0);
+}
 
-    let buttonOne = document.createElement("button");
-    buttonOne.textContent = quizQuestions[i].choice1;
-    buttonOne.dataset.answer = quizQuestions[i].answer;
-    qDiv.appendChild(buttonOne);
+function createButtons(i) {
+  let title = document.createElement("h2");
+  title.textContent = quizQuestions[i].question;
+  qDiv.appendChild(title);
 
-    let buttonTwo = document.createElement("button");
-    buttonTwo.textContent = quizQuestions[i].choice2;
-    buttonTwo.dataset.answer = quizQuestions[i].answer;
-    qDiv.appendChild(buttonTwo);
+  let buttonOne = document.createElement("button");
+  buttonOne.textContent = quizQuestions[i].choice1;
+  buttonOne.dataset.answer = quizQuestions[i].answer;
+  qDiv.appendChild(buttonOne);
 
-    let buttonThree = document.createElement("button");
-    buttonThree.textContent = quizQuestions[i].choice3;
-    buttonThree.dataset.answer = quizQuestions[i].answer;
-    qDiv.appendChild(buttonThree);
+  let buttonTwo = document.createElement("button");
+  buttonTwo.textContent = quizQuestions[i].choice2;
+  buttonTwo.dataset.answer = quizQuestions[i].answer;
+  qDiv.appendChild(buttonTwo);
 
-    let buttonFour = document.createElement("button");
-    buttonFour.textContent = quizQuestions[i].choice4;
-    buttonFour.dataset.answer = quizQuestions[i].answer;
-    qDiv.appendChild(buttonFour);
+  let buttonThree = document.createElement("button");
+  buttonThree.textContent = quizQuestions[i].choice3;
+  buttonThree.dataset.answer = quizQuestions[i].answer;
+  qDiv.appendChild(buttonThree);
 
-    qDiv.addEventListener("click", function (event) {
-      console.log(event.target);
-      let choice = event.target.innerHTML;
-      let answer = event.target.dataset.answer;
-
-      if (choice === answer) {
-        alert("You chose the right answer");
-      } else {
-        alert("You chose the wrong answer");
-      }
-    });
-  }
+  let buttonFour = document.createElement("button");
+  buttonFour.textContent = quizQuestions[i].choice4;
+  buttonFour.dataset.answer = quizQuestions[i].answer;
+  qDiv.appendChild(buttonFour);
 }
 
 //make clickable
 
 startQuizButton.addEventListener("click", startQuiz);
+qDiv.addEventListener("click", function (event) {
+  console.log(event.target);
+  let choice = event.target.innerHTML;
+  let answer = event.target.dataset.answer;
+  if (choice === answer) {
+    alert("You chose the right answer");
+    createButtons(quizQuestionsIndex);
+    quizQuestionsIndex++;
+  } else {
+    alert("You chose the wrong answer");
+    createButtons(quizQuestionsIndex);
+    quizQuestionsIndex++;
+  }
+});
