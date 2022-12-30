@@ -1,12 +1,7 @@
 //global variables
 let startQuizButton = document.querySelector("#startQuiz");
 let saveScore = document.querySelector("#saveInitials");
-let questionTitle = document.querySelector("#question");
-let buttonGrid = document.querySelector("#btnGrid");
-let buttonOne = document.querySelector("#btnOne");
-let buttonTwo = document.querySelector("#btnTwo");
-let buttonThree = document.querySelector("#btnThree");
-let buttonFour = document.querySelector("#btnFour");
+let qDiv = document.querySelector("#questions");
 
 //let viewScores;
 const quizQuestions = [
@@ -51,63 +46,50 @@ const quizQuestions = [
     answer: "Choice 4 goes here.",
   },
 ];
-let quizQuestionsCount = quizQuestions.length;
+let quizQuestionsCount = 0;
 
 //functions
 function startQuiz() {
   alert("I started the game");
-  questionTitle.append(quizQuestions[0].question);
-  //add four answer options
-  let btnOne = quizQuestions[0].choice1;
-  let btnTwo = quizQuestions[0].choice2;
-  let btnThree = quizQuestions[0].choice3;
-  let btnFour = quizQuestions[0].choice4;
-  buttonOne.append(btnOne);
-  buttonTwo.append(btnTwo);
-  buttonThree.append(btnThree);
-  buttonFour.append(btnFour);
-  buttonOne.onclick = function () {
-    console.log("I clicked button 1");
-    nextQuestion();
-  };
-  buttonTwo.onclick = function () {
-    console.log("I clicked button 2");
-    nextQuestion();
-  };
-  buttonThree.onclick = function () {
-    console.log("I clicked button 3");
-    nextQuestion();
-  };
-  buttonFour.onclick = function () {
-    console.log("I clicked button 4");
-    nextQuestion();
-  };
-  function nextQuestion() {
-    questionTitle.append(quizQuestions[1].question);
-    document.createElement("button", buttonOne);
-    //add four answer options
-    let btnOne = quizQuestions[1].choice1;
-    let btnTwo = quizQuestions[1].choice2;
-    let btnThree = quizQuestions[1].choice3;
-    let btnFour = quizQuestions[1].choice4;
-    buttonOne.append(btnOne);
-    buttonTwo.append(btnTwo);
-    buttonThree.append(btnThree);
-    buttonFour.append(btnFour);
-    buttonOne.onclick = function () {
-      console.log("I clicked button 1");
-    };
-    buttonTwo.onclick = function () {
-      console.log("I clicked button 2");
-    };
-    buttonThree.onclick = function () {
-      console.log("I clicked button 3");
-    };
-    buttonFour.onclick = function () {
-      console.log("I clicked button 4");
-    };
+  for (let i = 0; i <= quizQuestionsCount; i += 1) {
+    let title = document.createElement("h2");
+    title.textContent = quizQuestions[i].question;
+    qDiv.appendChild(title);
+
+    let buttonOne = document.createElement("button");
+    buttonOne.textContent = quizQuestions[i].choice1;
+    buttonOne.dataset.answer = quizQuestions[i].answer;
+    qDiv.appendChild(buttonOne);
+
+    let buttonTwo = document.createElement("button");
+    buttonTwo.textContent = quizQuestions[i].choice2;
+    buttonTwo.dataset.answer = quizQuestions[i].answer;
+    qDiv.appendChild(buttonTwo);
+
+    let buttonThree = document.createElement("button");
+    buttonThree.textContent = quizQuestions[i].choice3;
+    buttonThree.dataset.answer = quizQuestions[i].answer;
+    qDiv.appendChild(buttonThree);
+
+    let buttonFour = document.createElement("button");
+    buttonFour.textContent = quizQuestions[i].choice4;
+    buttonFour.dataset.answer = quizQuestions[i].answer;
+    qDiv.appendChild(buttonFour);
+
+    qDiv.addEventListener("click", function (event) {
+      console.log(event.target);
+      let choice = event.target.innerHTML;
+      let answer = event.target.dataset.answer;
+
+      if (choice === answer) {
+        alert("You chose the right answer");
+      } else {
+        alert("You chose the wrong answer");
+      }
+    });
   }
-  //make clickable
 }
+
+//make clickable
 
 startQuizButton.addEventListener("click", startQuiz);
