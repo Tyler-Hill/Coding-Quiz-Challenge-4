@@ -13,12 +13,12 @@ let buttonsCount = buttons.length;
 //let viewScores;
 const quizQuestions = [
   {
-    question: "Question 1 goes here.",
-    choice1: "Choice 1 goes here.",
-    choice2: "Choice 2 goes here.",
-    choice3: "Choice 3 goes here.",
-    choice4: "Choice 4 goes here.",
-    answer: "Choice 3 goes here.",
+    question: "What does this bootcamp teach us about?",
+    choice1: "Front-end coding",
+    choice2: "Back-end coding",
+    choice3: "Coding Collaboration",
+    choice4: "All these choices are correct",
+    answer: "All these choices are correct",
   },
   {
     question: "Question 2 goes here.",
@@ -73,12 +73,25 @@ function startQuiz() {
 }
 
 function choiceClick() {
-  for (let i = 0; i <= buttonsCount; i += 1) {
-    buttons[i].onclick = function () {
-      alert(this.id);
-    };
-  }
+  buttonOne.onclick = function () {
+    console.log("I clicked button 1");
+  };
+  buttonTwo.onclick = function () {
+    console.log("I clicked button 2");
+  };
+  buttonThree.onclick = function () {
+    console.log("I clicked button 3");
+  };
+  buttonFour.onclick = function () {
+    console.log("I clicked button 4");
+  };
 }
 
+// for (let i = 0; i <= buttonsCount; i += 1) {
+//   buttons[i].onclick = function () {
+//     console.log(buttons);
+//     alert(this.id);
+//   };
+// }
 startQuizButton.addEventListener("click", startQuiz);
 buttonGrid.addEventListener("click", choiceClick);
