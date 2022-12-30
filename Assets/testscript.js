@@ -56,13 +56,40 @@ let quizQuestionsCount = quizQuestions.length;
 //functions
 function startQuiz() {
   alert("I started the game");
-  for (let i = 0; i < quizQuestionsCount; i += 1) {
-    questionTitle.append(quizQuestions[i].question);
+  questionTitle.append(quizQuestions[0].question);
+  //add four answer options
+  let btnOne = quizQuestions[0].choice1;
+  let btnTwo = quizQuestions[0].choice2;
+  let btnThree = quizQuestions[0].choice3;
+  let btnFour = quizQuestions[0].choice4;
+  buttonOne.append(btnOne);
+  buttonTwo.append(btnTwo);
+  buttonThree.append(btnThree);
+  buttonFour.append(btnFour);
+  buttonOne.onclick = function () {
+    console.log("I clicked button 1");
+    nextQuestion();
+  };
+  buttonTwo.onclick = function () {
+    console.log("I clicked button 2");
+    nextQuestion();
+  };
+  buttonThree.onclick = function () {
+    console.log("I clicked button 3");
+    nextQuestion();
+  };
+  buttonFour.onclick = function () {
+    console.log("I clicked button 4");
+    nextQuestion();
+  };
+  function nextQuestion() {
+    questionTitle.append(quizQuestions[1].question);
+    document.createElement("button", buttonOne);
     //add four answer options
-    let btnOne = quizQuestions[i].choice1;
-    let btnTwo = quizQuestions[i].choice2;
-    let btnThree = quizQuestions[i].choice3;
-    let btnFour = quizQuestions[i].choice4;
+    let btnOne = quizQuestions[1].choice1;
+    let btnTwo = quizQuestions[1].choice2;
+    let btnThree = quizQuestions[1].choice3;
+    let btnFour = quizQuestions[1].choice4;
     buttonOne.append(btnOne);
     buttonTwo.append(btnTwo);
     buttonThree.append(btnThree);
@@ -80,7 +107,6 @@ function startQuiz() {
       console.log("I clicked button 4");
     };
   }
-
   //make clickable
 }
 
