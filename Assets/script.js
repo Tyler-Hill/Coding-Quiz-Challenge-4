@@ -3,6 +3,12 @@ let startQuizButton = document.querySelector("#startQuiz");
 let saveScore = document.querySelector("#saveInitials");
 let questionTitle = document.querySelector("#question");
 let buttonGrid = document.querySelector("#btnGrid");
+let buttonOne = document.querySelector("#btnOne");
+let buttonTwo = document.querySelector("#btnTwo");
+let buttonThree = document.querySelector("#btnThree");
+let buttonFour = document.querySelector("#btnFour");
+let buttons = document.getElementsByTagName("button");
+let buttonsCount = buttons.length;
 
 //let viewScores;
 const quizQuestions = [
@@ -56,12 +62,23 @@ function startQuiz() {
   //add four answer options
   let btnOne = quizQuestions[0].choice1;
   let btnTwo = quizQuestions[0].choice2;
-  buttonGrid.append(btnOne);
-  buttonGrid.append(btnTwo);
+  let btnThree = quizQuestions[0].choice3;
+  let btnFour = quizQuestions[0].choice4;
+  buttonOne.append(btnOne);
+  buttonTwo.append(btnTwo);
+  buttonThree.append(btnThree);
+  buttonFour.append(btnFour);
 
   //make clickable
 }
 
-//function calls
+function choiceClick() {
+  for (let i = 0; i <= buttonsCount; i += 1) {
+    buttons[i].onclick = function () {
+      alert(this.id);
+    };
+  }
+}
 
 startQuizButton.addEventListener("click", startQuiz);
+buttonGrid.addEventListener("click", choiceClick);
