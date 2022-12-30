@@ -56,7 +56,8 @@ function startQuiz() {
   //add four answer options
   let btnOne = quizQuestions[0].choice1;
   let btnTwo = quizQuestions[0].choice2;
-  buttonGrid.append(btnOne, btnTwo);
+  buttonGrid.append(btnOne);
+  buttonGrid.append(btnTwo);
 
   //make clickable
 }
