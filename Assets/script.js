@@ -3,18 +3,14 @@ let startQuizButton = document.querySelector("#startQuiz");
 let saveScore = document.querySelector("#saveInitials");
 let qDiv = document.querySelector("#questions");
 let rDiv = document.querySelector("#reset");
-let correctAnswers = 0;
-let wrongAnswers = 0;
+let timerEl = document.querySelector(".timer");
+let secondsLeft = 59;
+let scores = "";
 
-const highScores = {
-  // Name: saveName,
-  Correct: correctAnswers,
-  Incorrect: wrongAnswers,
-};
 //let viewScores;
 const quizQuestions = [
   {
-    question: "What does this bootcamp teach us about?",
+    question: "1. What does this bootcamp teach us about?",
     choice1: "Front-end coding",
     choice2: "Back-end coding",
     choice3: "Coding Collaboration",
@@ -22,7 +18,7 @@ const quizQuestions = [
     answer: "All these choices are correct",
   },
   {
-    question: "What does 'CSS' stand for?",
+    question: "2. What does 'CSS' stand for?",
     choice1: "Coding Sleek Software",
     choice2: "Cascading Style Sheets",
     choice3: "Cool Styling Stuff",
@@ -30,7 +26,7 @@ const quizQuestions = [
     answer: "Cascading Style Sheets",
   },
   {
-    question: "What end can JavaScript be used to code for?",
+    question: "3. What end can JavaScript be used to code for?",
     choice1: "Frond-End",
     choice2: "Back-End",
     choice3: "Both front and back-end",
@@ -38,7 +34,7 @@ const quizQuestions = [
     answer: "Both front and back-end",
   },
   {
-    question: "What is an example of a Tag?",
+    question: "4. What is an example of an Element?",
     choice1: "'div'",
     choice2: "'let'",
     choice3: "'==='",
@@ -46,7 +42,7 @@ const quizQuestions = [
     answer: "'div'",
   },
   {
-    question: "Did you have fun?",
+    question: "5. Did you have fun?",
     choice1: "Yes",
     choice2: "Yes",
     choice3: "Yes",
@@ -61,11 +57,14 @@ let quizQuestionsIndex = 1;
 function startQuiz() {
   alert("I started the game");
   createButtons(0);
+  quizTimer();
 }
 
 function createButtons(i) {
   qDiv.innerHTML = "";
   if (quizQuestionsIndex >= quizQuestionsLength) {
+    localStorage.setItem("secondsLeft", secondsLeft);
+    stopTimer();
     gameOver();
   } else {
     let title = document.createElement("h2");
@@ -101,15 +100,14 @@ function gameOver() {
   playAgain.textContent = "Play again?";
   rDiv.appendChild(playAgain);
 
-  // let saveName = document.createElement("input");
-  // saveName.textContent = "Please Enter Your Name";
-  // rDiv.appendChild(saveName);
-
+  let saveName = document.createElement("input");
+  saveName.textContent = "Please Enter Your Name";
+  rDiv.appendChild(saveName);
   let saveButton = document.createElement("button");
   saveButton.textContent = "Save Score";
   rDiv.appendChild(saveButton);
   saveButton.addEventListener("click", function () {
-    console.log(highScores);
+    localStorage.setItem("name", saveName.textContent);
   });
 
   playAgain.addEventListener("click", function () {
@@ -117,8 +115,22 @@ function gameOver() {
     console.log(quizQuestionsIndex);
     rDiv.innerHTML = "";
     console.log(highScores);
+    secondsLeft = 59;
     startQuiz();
   });
+}
+function quizTimer() {
+  let timeInterval = setInterval(function () {
+    timerEl.textContent = `${secondsLeft}`;
+    secondsLeft--;
+    if (secondsLeft === 0) {
+      clearInterval(timeInterval);
+      gameOver();
+    }
+  }, 1000);
+  function stopTimer() {
+    clearInterval(timeInterval);
+  }
 }
 
 startQuizButton.addEventListener("click", startQuiz);
@@ -128,18 +140,13 @@ qDiv.addEventListener("click", function (event) {
   let answer = event.target.dataset.answer;
   if (choice === answer) {
     alert("You chose the right answer");
-    createButtons(quizQuestionsIndex);
     quizQuestionsIndex++;
-    correctAnswers++;
-    // localStorage.setItem("correctAnswers", correctAnswers);
+    createButtons(quizQuestionsIndex);
   } else {
     alert("You chose the wrong answer");
-    createButtons(quizQuestionsIndex);
+    secondsLeft -= 10;
     quizQuestionsIndex++;
-    wrongAnswers++;
-    // localStorage.setItem("wrongAnswers", wrongAnswers);
+    createButtons(quizQuestionsIndex);
   }
-  console.log(correctAnswers);
-  console.log(wrongAnswers);
 });
 //change rDiv to include save
