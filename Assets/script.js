@@ -3,9 +3,10 @@ let startQuizButton = document.querySelector("#startQuiz");
 let saveScore = document.querySelector("#saveInitials");
 let qDiv = document.querySelector("#questions");
 let rDiv = document.querySelector("#reset");
+let inputDiv = document.querySelector("#input");
 let timerEl = document.querySelector(".timer");
 let secondsLeft = 59;
-let scores = "";
+const highScores = [];
 
 //let viewScores;
 const quizQuestions = [
@@ -97,32 +98,46 @@ function createButtons(i) {
 function gameOver() {
   qDiv.innerHTML = "";
   alert("Game over!");
+  // play again button
   let playAgain = document.createElement("button");
   playAgain.textContent = "Play again?";
   rDiv.appendChild(playAgain);
 
+  // name input
   let saveName = document.createElement("input");
-  saveName.textContent = "Please Enter Your Name";
-  rDiv.appendChild(saveName);
+  saveName.setAttribute("id", "initials");
+  inputDiv.appendChild(saveName);
+
+  // save button
   let saveButton = document.createElement("button");
   saveButton.textContent = "Save Score";
-  rDiv.appendChild(saveButton);
+  inputDiv.appendChild(saveButton);
   saveButton.addEventListener("click", function () {
-    localStorage.setItem("name", saveName.textContent);
+    submitScore();
   });
 
+  // play again event listner
   playAgain.addEventListener("click", function () {
     quizQuestionsIndex = 1;
-    console.log(quizQuestionsIndex);
     rDiv.innerHTML = "";
-    console.log(highScores);
     secondsLeft = 59;
     startQuiz();
   });
 }
+// submit score function
+function submitScore() {
+  let name = document.querySelector("#initials").value;
+  let score = localStorage.getItem("secondsLeft");
+  let userScore = {
+    name: name,
+    score: score,
+  };
+  highScores.push(userScore, JSON.stringify(highScores));
+  localStorage.setItem(highScores);
+}
 
+// quiztimer function
 function quizTimer() {
-  // Sets  interval in variable
   let timerInterval = setInterval(function () {
     timerEl.textContent = `${secondsLeft}`;
     secondsLeft--;
@@ -149,4 +164,3 @@ qDiv.addEventListener("click", function (event) {
     createButtons(quizQuestionsIndex);
   }
 });
-//change rDiv to include save
