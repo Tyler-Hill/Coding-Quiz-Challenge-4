@@ -2,6 +2,15 @@
 let startQuizButton = document.querySelector("#startQuiz");
 let saveScore = document.querySelector("#saveInitials");
 let qDiv = document.querySelector("#questions");
+let rDiv = document.querySelector("#reset");
+let correctAnswers = 0;
+let wrongAnswers = 0;
+
+const highScores = {
+  // Name: saveName,
+  Correct: correctAnswers,
+  Incorrect: wrongAnswers,
+};
 //let viewScores;
 const quizQuestions = [
   {
@@ -13,38 +22,39 @@ const quizQuestions = [
     answer: "All these choices are correct",
   },
   {
-    question: "Question 2 goes here.",
-    choice1: "Choice 1 goes here.",
-    choice2: "Choice 2 goes here.",
-    choice3: "Choice 3 goes here.",
-    choice4: "Choice 4 goes here.",
-    answer: "Choice 2 goes here.",
+    question: "What does 'CSS' stand for?",
+    choice1: "Coding Sleek Software",
+    choice2: "Cascading Style Sheets",
+    choice3: "Cool Styling Stuff",
+    choice4: "Color Software Service",
+    answer: "Cascading Style Sheets",
   },
   {
-    question: "Question 3 goes here.",
-    choice1: "Choice 1 goes here.",
-    choice2: "Choice 2 goes here.",
-    choice3: "Choice 3 goes here.",
-    choice4: "Choice 4 goes here.",
-    answer: "Choice 1 goes here.",
+    question: "What end can JavaScript be used to code for?",
+    choice1: "Frond-End",
+    choice2: "Back-End",
+    choice3: "Both front and back-end",
+    choice4: "Neither front or back-end",
+    answer: "Both front and back-end",
   },
   {
-    question: "Question 4 goes here.",
-    choice1: "Choice 1 goes here.",
-    choice2: "Choice 2 goes here.",
-    choice3: "Choice 3 goes here.",
-    choice4: "Choice 4 goes here.",
-    answer: "Choice 1 goes here.",
+    question: "What is an example of a Tag?",
+    choice1: "'div'",
+    choice2: "'let'",
+    choice3: "'==='",
+    choice4: "'[]'",
+    answer: "'div'",
   },
   {
-    question: "Question 5 goes here.",
-    choice1: "Choice 1 goes here.",
-    choice2: "Choice 2 goes here.",
-    choice3: "Choice 3 goes here.",
-    choice4: "Choice 4 goes here.",
-    answer: "Choice 4 goes here.",
+    question: "Did you have fun?",
+    choice1: "Yes",
+    choice2: "Yes",
+    choice3: "Yes",
+    choice4: "No",
+    answer: "Yes",
   },
 ];
+let quizQuestionsLength = quizQuestions.length;
 let quizQuestionsIndex = 1;
 
 //functions
@@ -55,34 +65,61 @@ function startQuiz() {
 
 function createButtons(i) {
   qDiv.innerHTML = "";
-  let title = document.createElement("h2");
-  title.textContent = quizQuestions[i].question;
-  qDiv.appendChild(title);
+  if (quizQuestionsIndex >= quizQuestionsLength) {
+    gameOver();
+  } else {
+    let title = document.createElement("h2");
+    title.textContent = quizQuestions[i].question;
+    qDiv.appendChild(title);
 
-  let buttonOne = document.createElement("button");
-  buttonOne.textContent = quizQuestions[i].choice1;
-  buttonOne.dataset.answer = quizQuestions[i].answer;
-  qDiv.appendChild(buttonOne);
+    let buttonOne = document.createElement("button");
+    buttonOne.textContent = quizQuestions[i].choice1;
+    buttonOne.dataset.answer = quizQuestions[i].answer;
+    qDiv.appendChild(buttonOne);
 
-  let buttonTwo = document.createElement("button");
-  buttonTwo.textContent = quizQuestions[i].choice2;
-  buttonTwo.dataset.answer = quizQuestions[i].answer;
-  qDiv.appendChild(buttonTwo);
+    let buttonTwo = document.createElement("button");
+    buttonTwo.textContent = quizQuestions[i].choice2;
+    buttonTwo.dataset.answer = quizQuestions[i].answer;
+    qDiv.appendChild(buttonTwo);
 
-  let buttonThree = document.createElement("button");
-  buttonThree.textContent = quizQuestions[i].choice3;
-  buttonThree.dataset.answer = quizQuestions[i].answer;
-  qDiv.appendChild(buttonThree);
+    let buttonThree = document.createElement("button");
+    buttonThree.textContent = quizQuestions[i].choice3;
+    buttonThree.dataset.answer = quizQuestions[i].answer;
+    qDiv.appendChild(buttonThree);
 
-  let buttonFour = document.createElement("button");
-  buttonFour.textContent = quizQuestions[i].choice4;
-  buttonFour.dataset.answer = quizQuestions[i].answer;
-  qDiv.appendChild(buttonFour);
+    let buttonFour = document.createElement("button");
+    buttonFour.textContent = quizQuestions[i].choice4;
+    buttonFour.dataset.answer = quizQuestions[i].answer;
+    qDiv.appendChild(buttonFour);
+  }
 }
-// Remove buttons function
-// function removeButtons() {
-//   qDiv.removeChild();
-// }
+// Game Over
+function gameOver() {
+  qDiv.innerHTML = "";
+  alert("Game over!");
+  let playAgain = document.createElement("button");
+  playAgain.textContent = "Play again?";
+  rDiv.appendChild(playAgain);
+
+  // let saveName = document.createElement("input");
+  // saveName.textContent = "Please Enter Your Name";
+  // rDiv.appendChild(saveName);
+
+  let saveButton = document.createElement("button");
+  saveButton.textContent = "Save Score";
+  rDiv.appendChild(saveButton);
+  saveButton.addEventListener("click", function () {
+    console.log(highScores);
+  });
+
+  playAgain.addEventListener("click", function () {
+    quizQuestionsIndex = 1;
+    console.log(quizQuestionsIndex);
+    rDiv.innerHTML = "";
+    console.log(highScores);
+    startQuiz();
+  });
+}
 
 startQuizButton.addEventListener("click", startQuiz);
 qDiv.addEventListener("click", function (event) {
@@ -93,12 +130,16 @@ qDiv.addEventListener("click", function (event) {
     alert("You chose the right answer");
     createButtons(quizQuestionsIndex);
     quizQuestionsIndex++;
-    // removeButtons();
-    //if quizQuestionsIndex > length == game over!
+    correctAnswers++;
+    // localStorage.setItem("correctAnswers", correctAnswers);
   } else {
     alert("You chose the wrong answer");
     createButtons(quizQuestionsIndex);
     quizQuestionsIndex++;
-    // removeButtons();
+    wrongAnswers++;
+    // localStorage.setItem("wrongAnswers", wrongAnswers);
   }
+  console.log(correctAnswers);
+  console.log(wrongAnswers);
 });
+//change rDiv to include save
