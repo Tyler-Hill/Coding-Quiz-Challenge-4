@@ -64,7 +64,8 @@ function createButtons(i) {
   qDiv.innerHTML = "";
   if (quizQuestionsIndex >= quizQuestionsLength) {
     localStorage.setItem("secondsLeft", secondsLeft);
-    stopTimer();
+    timerEl = "";
+    secondsLeft = 1000000;
     gameOver();
   } else {
     let title = document.createElement("h2");
@@ -119,18 +120,17 @@ function gameOver() {
     startQuiz();
   });
 }
+
 function quizTimer() {
-  let timeInterval = setInterval(function () {
+  // Sets  interval in variable
+  let timerInterval = setInterval(function () {
     timerEl.textContent = `${secondsLeft}`;
     secondsLeft--;
     if (secondsLeft === 0) {
-      clearInterval(timeInterval);
+      clearInterval(timerInterval);
       gameOver();
     }
   }, 1000);
-  function stopTimer() {
-    clearInterval(timeInterval);
-  }
 }
 
 startQuizButton.addEventListener("click", startQuiz);
