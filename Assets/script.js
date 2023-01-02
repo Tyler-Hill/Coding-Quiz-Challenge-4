@@ -8,7 +8,9 @@ let timerEl = document.querySelector(".timer");
 let secondsLeft = 59;
 const highScores = [];
 
-//let viewScores;
+let viewScoresDiv = document.querySelector("#viewHighScores");
+// let highScoresPage = document.querySelector("#highScoresPage");
+
 const quizQuestions = [
   {
     question: "1. What does this bootcamp teach us about?",
@@ -54,13 +56,13 @@ const quizQuestions = [
 let quizQuestionsLength = quizQuestions.length;
 let quizQuestionsIndex = 1;
 
-//functions
+//begins quiz
 function startQuiz() {
   alert("I started the game");
   createButtons(0);
   quizTimer();
 }
-
+//actual quiz
 function createButtons(i) {
   qDiv.innerHTML = "";
   if (quizQuestionsIndex >= quizQuestionsLength) {
@@ -146,6 +148,23 @@ function quizTimer() {
       gameOver();
     }
   }, 1000);
+}
+
+// view high scores page button thing
+// highScoresPage.addEventListener("click", function () {
+//   let viewScoresDiv = document.getElementsByClassName("viewHighScores");
+//   let showHighScores = document.createElement("h2");
+//   showHighScores.textContent = "hello!";
+//   viewScoresDiv.append(showHighScores);
+// });
+
+function pasteHighScores() {
+  let hs = window.open("highscores.html");
+  hs.onload = function () {
+    let showHighScores = document.createElement("h2");
+    showHighScores.textContent = "hello!";
+    viewScoresDiv.append(showHighScores);
+  };
 }
 
 startQuizButton.addEventListener("click", startQuiz);
