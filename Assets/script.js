@@ -3,9 +3,10 @@ let startQuizButton = document.querySelector("#startQuiz");
 let saveScore = document.querySelector("#saveInitials");
 let qDiv = document.querySelector("#questions");
 let rDiv = document.querySelector("#reset");
-let inputDiv = document.querySelector("#input");
+let highscoreForm = document.querySelector("#hsForm");
 let timerEl = document.querySelector(".timer");
-let secondsLeft = 59;
+let resultsDiv = document.querySelector("#results");
+let secondsLeft = 60;
 const highScores = [];
 
 // const page = window.open("highscores.html");
@@ -62,15 +63,15 @@ function startQuiz() {
   alert("I started the game");
   createButtons(0);
   quizTimer();
+  startQuizButton.remove();
 }
 //actual quiz
 function createButtons(i) {
   qDiv.innerHTML = "";
   // ends game
   if (quizQuestionsIndex >= quizQuestionsLength) {
-    localStorage.setItem("secondsLeft", secondsLeft);
-    timerEl = "";
-    secondsLeft = 1000000;
+    localStorage.setItem("score", secondsLeft);
+    timerEl.innerHTML = "";
     gameOver();
   } else {
     //Continues
@@ -108,51 +109,81 @@ function gameOver() {
   playAgain.textContent = "Play again?";
   rDiv.appendChild(playAgain);
 
+  let highscoreText = document.createElement("h3");
+  highscoreText.textContent = "Enter your highscore!";
+  highscoreForm.appendChild(highscoreText);
+
   // name input
   let saveName = document.createElement("input");
   saveName.setAttribute("id", "initials");
-  inputDiv.appendChild(saveName);
+  highscoreForm.appendChild(saveName);
 
   // save button
   let saveButton = document.createElement("button");
   saveButton.textContent = "Save Score";
-  inputDiv.appendChild(saveButton);
-  saveButton.addEventListener("click", function () {
-    submitScore();
-  });
+  highscoreForm.appendChild(saveButton);
 
   // play again event listner
   playAgain.addEventListener("click", function () {
     quizQuestionsIndex = 1;
     rDiv.innerHTML = "";
-    inputDiv.innerHTML = "";
+    highscoreForm.innerHTML = "";
     secondsLeft = 59;
     startQuiz();
   });
 }
 // submit score function
-function submitScore() {
-  let name = document.querySelector("#initials").value;
-  let score = localStorage.getItem("secondsLeft");
-  let userScore = {
-    name: name,
-    score: score,
-  };
-  highScores.push(userScore, JSON.stringify(highScores));
-  localStorage.setItem(highScores);
+function submitScore(event) {
+  event.preventDefault();
+  let element = event.target;
+  if (element.matches("button")) {
+    console.log(event);
+    let name = document.querySelector("#initials").value;
+    let score = secondsLeft;
+    let userScore = {
+      name: name,
+      score: score,
+    };
+    highScores.push(userScore, JSON.stringify(highScores));
+    resultsDiv.textContent = highScores;
+    console.log(highScores);
+  }
+}
+
+//Question answering function
+function answerButtons(event) {
+  console.log(event.target);
+  let choice = event.target.innerHTML;
+  let answer = event.target.dataset.answer;
+  let element = event.target;
+  if (element.matches("button")) {
+    if (choice === answer) {
+      resultsDiv.textContent = "CORRECT!";
+    } else {
+      resultsDiv.textContent = "WRONG!";
+      secondsLeft -= 10;
+    }
+    quizQuestionsIndex++;
+    createButtons(quizQuestionsIndex);
+    setTimeout(function () {
+      resultsDiv.textContent = "";
+    }, 1000);
+  }
 }
 
 // quiztimer function
-let quizTimer = function () {
+function quizTimer() {
   let timerInterval = setInterval(function () {
     timerEl.textContent = `${secondsLeft}`;
     secondsLeft--;
     if (secondsLeft === 0) {
       clearInterval(timerInterval);
       gameOver();
+    } else if (quizQuestionsIndex >= quizQuestionsLength) {
+      clearInterval(timerInterval);
     }
   }, 1000);
-};
+}
 
 // view high scores page button thing
 // highScoresPage.addEventListener("click", function () {
@@ -162,14 +193,14 @@ let quizTimer = function () {
 //   viewScoresDiv.append(showHighScores);
 // });
 
-function pasteHighScores() {
-  let hs = window.open("../highscores.html");
-  hs.onload = function () {
-    let showHighScores = document.createElement("h2");
-    showHighScores.textContent = "hello!";
-    viewScoresDiv.append(showHighScores);
-  };
-}
+// function pasteHighScores() {
+//   let hs = window.open("../highscores.html");
+//   hs.onload = function () {
+//     let showHighScores = document.createElement("h2");
+//     showHighScores.textContent = "hello!";
+//     viewScoresDiv.append(showHighScores);
+//   };
+// }
 
 // page.addEventListener("DOMContentLoaded", () => {
 //   // Now we can access the #test element on the other page
@@ -178,23 +209,5 @@ function pasteHighScores() {
 // });
 
 startQuizButton.addEventListener("click", startQuiz);
-qDiv.addEventListener("click", function (event) {
-  console.log(event.target);
-  let choice = event.target.innerHTML;
-  let answer = event.target.dataset.answer;
-  let element = event.target;
-  if (element.matches("button")) {
-    if (choice === answer) {
-      alert("You chose the right answer");
-      quizQuestionsIndex++;
-      createButtons(quizQuestionsIndex);
-    } else {
-      alert("You chose the wrong answer");
-      secondsLeft -= 10;
-      quizQuestionsIndex++;
-      createButtons(quizQuestionsIndex);
-    }
-  }
-});
-
-pasteHighScores();
+qDiv.addEventListener("click", answerButtons);
+highscoreForm.addEventListener("click", submitScore);
