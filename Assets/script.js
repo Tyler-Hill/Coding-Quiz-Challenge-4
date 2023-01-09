@@ -8,7 +8,8 @@ let timerEl = document.querySelector(".timer");
 let secondsLeft = 59;
 const highScores = [];
 
-let viewScoresDiv = document.querySelector("#viewHighScores");
+// const page = window.open("highscores.html");
+// let viewScoresDiv = document.querySelector("#viewHighScores");
 // let highScoresPage = document.querySelector("#highScoresPage");
 
 const quizQuestions = [
@@ -54,7 +55,7 @@ const quizQuestions = [
   },
 ];
 let quizQuestionsLength = quizQuestions.length;
-let quizQuestionsIndex = 1;
+let quizQuestionsIndex = 0;
 
 //begins quiz
 function startQuiz() {
@@ -65,12 +66,14 @@ function startQuiz() {
 //actual quiz
 function createButtons(i) {
   qDiv.innerHTML = "";
+  // ends game
   if (quizQuestionsIndex >= quizQuestionsLength) {
     localStorage.setItem("secondsLeft", secondsLeft);
     timerEl = "";
     secondsLeft = 1000000;
     gameOver();
   } else {
+    //Continues
     let title = document.createElement("h2");
     title.textContent = quizQuestions[i].question;
     qDiv.appendChild(title);
@@ -122,6 +125,7 @@ function gameOver() {
   playAgain.addEventListener("click", function () {
     quizQuestionsIndex = 1;
     rDiv.innerHTML = "";
+    inputDiv.innerHTML = "";
     secondsLeft = 59;
     startQuiz();
   });
@@ -139,7 +143,7 @@ function submitScore() {
 }
 
 // quiztimer function
-function quizTimer() {
+let quizTimer = function () {
   let timerInterval = setInterval(function () {
     timerEl.textContent = `${secondsLeft}`;
     secondsLeft--;
@@ -148,7 +152,7 @@ function quizTimer() {
       gameOver();
     }
   }, 1000);
-}
+};
 
 // view high scores page button thing
 // highScoresPage.addEventListener("click", function () {
@@ -159,7 +163,7 @@ function quizTimer() {
 // });
 
 function pasteHighScores() {
-  let hs = window.open("highscores.html");
+  let hs = window.open("../highscores.html");
   hs.onload = function () {
     let showHighScores = document.createElement("h2");
     showHighScores.textContent = "hello!";
@@ -167,19 +171,30 @@ function pasteHighScores() {
   };
 }
 
+// page.addEventListener("DOMContentLoaded", () => {
+//   // Now we can access the #test element on the other page
+//   const testDiv = page.document.getElementById("test");
+//   testDiv.textContent = "Hello world!";
+// });
+
 startQuizButton.addEventListener("click", startQuiz);
 qDiv.addEventListener("click", function (event) {
   console.log(event.target);
   let choice = event.target.innerHTML;
   let answer = event.target.dataset.answer;
-  if (choice === answer) {
-    alert("You chose the right answer");
-    quizQuestionsIndex++;
-    createButtons(quizQuestionsIndex);
-  } else {
-    alert("You chose the wrong answer");
-    secondsLeft -= 10;
-    quizQuestionsIndex++;
-    createButtons(quizQuestionsIndex);
+  let element = event.target;
+  if (element.matches("button")) {
+    if (choice === answer) {
+      alert("You chose the right answer");
+      quizQuestionsIndex++;
+      createButtons(quizQuestionsIndex);
+    } else {
+      alert("You chose the wrong answer");
+      secondsLeft -= 10;
+      quizQuestionsIndex++;
+      createButtons(quizQuestionsIndex);
+    }
   }
 });
+
+pasteHighScores();
