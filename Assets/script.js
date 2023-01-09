@@ -7,7 +7,7 @@ let highscoreForm = document.querySelector("#hsForm");
 let timerEl = document.querySelector(".timer");
 let resultsDiv = document.querySelector("#results");
 let secondsLeft = 60;
-const highScores = [];
+let highScores = [];
 
 // const page = window.open("highscores.html");
 // let viewScoresDiv = document.querySelector("#viewHighScores");
@@ -144,12 +144,23 @@ function submitScore(event) {
       name: name,
       score: score,
     };
-    highScores.push(userScore, JSON.stringify(highScores));
-    resultsDiv.textContent = highScores;
+    highScores.push(JSON.stringify(userScore));
     console.log(highScores);
+    storeScores();
   }
 }
+// stores HighScores to local storage
+function storeScores() {
+  localStorage.setItem("highScores", JSON.stringify(highScores));
+}
 
+// Initialization
+function init() {
+  let initScores = JSON.parse(localStorage.getItem("highScores"));
+  if (initScores !== null) {
+    highScores = initScores;
+  }
+}
 //Question answering function
 function answerButtons(event) {
   console.log(event.target);
@@ -211,3 +222,4 @@ function quizTimer() {
 startQuizButton.addEventListener("click", startQuiz);
 qDiv.addEventListener("click", answerButtons);
 highscoreForm.addEventListener("click", submitScore);
+init();
