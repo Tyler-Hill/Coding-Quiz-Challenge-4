@@ -4,14 +4,12 @@ let saveScore = document.querySelector("#saveInitials");
 let qDiv = document.querySelector("#questions");
 let rDiv = document.querySelector("#reset");
 let highscoreForm = document.querySelector("#hsForm");
+let highscoreDiv = document.querySelector("#viewHighScores")
+let highscoresList = document.querySelector("#highscoreList")
 let timerEl = document.querySelector(".timer");
 let resultsDiv = document.querySelector("#results");
 let secondsLeft = 60;
 let highScores = [];
-
-// const page = window.open("highscores.html");
-// let viewScoresDiv = document.querySelector("#viewHighScores");
-// let highScoresPage = document.querySelector("#highScoresPage");
 
 const quizQuestions = [
   {
@@ -123,6 +121,11 @@ function gameOver() {
   saveButton.textContent = "Save Score";
   highscoreForm.appendChild(saveButton);
 
+  // view High Scores
+  let seeHighscores = document.createElement("button");
+  seeHighscores.textContent = "View All Highscores";
+  highscoreDiv.appendChild(seeHighscores);
+
   // play again event listner
   playAgain.addEventListener("click", function () {
     quizQuestionsIndex = 1;
@@ -147,8 +150,22 @@ function submitScore(event) {
     highScores.push(JSON.stringify(userScore));
     console.log(highScores);
     storeScores();
+
+    highscoreForm.remove();
+    let scoreNotification = document.createElement("h4");
+    scoreNotification.innerHTML = "Score Submitted!";
+    rDiv.appendChild(scoreNotification);
   }
 }
+
+// View Highscores function
+function viewHighScores(){
+  highScores.forEach(score => {
+    highscoresList.appendChild(score)
+  });
+ 
+}
+
 // stores HighScores to local storage
 function storeScores() {
   localStorage.setItem("highScores", JSON.stringify(highScores));
@@ -222,4 +239,6 @@ function quizTimer() {
 startQuizButton.addEventListener("click", startQuiz);
 qDiv.addEventListener("click", answerButtons);
 highscoreForm.addEventListener("click", submitScore);
+highscoreDiv.addEventListener("click", viewHighScores);
 init();
+
