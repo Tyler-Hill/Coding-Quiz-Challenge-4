@@ -5,7 +5,7 @@ let qDiv = document.querySelector("#questions");
 let rDiv = document.querySelector("#reset");
 let highscoreForm = document.querySelector("#hsForm");
 let highscoreDiv = document.querySelector("#viewHighScores");
-let highscoresList = document.querySelector("#highscoreList");
+let highscoresList = document.querySelector("#highscoresList");
 let timerEl = document.querySelector(".timer");
 let resultsDiv = document.querySelector("#results");
 let secondsLeft = 60;
@@ -55,10 +55,11 @@ const quizQuestions = [
 ];
 let quizQuestionsLength = quizQuestions.length;
 let quizQuestionsIndex = 0;
+let highscoresLength = highScores.length;
+let highscoresIndex = 0;
 
 //begins quiz
 function startQuiz() {
-  alert("I started the game");
   createButtons(0);
   quizTimer();
   startQuizButton.remove();
@@ -105,7 +106,6 @@ function createButtons(i) {
 // Game Over
 function gameOver() {
   qDiv.innerHTML = "";
-  alert("Game over!");
   // play again button
   let playAgain = document.createElement("button");
   playAgain.setAttribute("class", "m-2 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow");
@@ -139,6 +139,7 @@ function gameOver() {
     quizQuestionsIndex = 1;
     rDiv.innerHTML = "";
     highscoreForm.innerHTML = "";
+    highscoresList.innerHTML = "";
     secondsLeft = 59;
     startQuiz();
   });
@@ -155,11 +156,11 @@ function submitScore(event) {
       name: name,
       score: score,
     };
-    highScores.push(JSON.stringify(userScore));
+    highScores.push(userScore);
     console.log(highScores);
     storeScores();
 
-    highscoreForm.remove();
+    highscoreForm.innerHTML = "";
     let scoreNotification = document.createElement("h4");
     scoreNotification.innerHTML = "Score Submitted!";
     rDiv.appendChild(scoreNotification);
@@ -168,9 +169,17 @@ function submitScore(event) {
 
 // View Highscores function
 function viewHighScores() {
-  highScores.forEach((score) => {
-    highscoresList.appendChild(score);
+  // sorts hs array by highest first
+  highScores.sort(function (a, b) {
+    return b.score - a.score;
   });
+  for (let score of highScores) {
+    let scoreItem = document.createElement("li");
+    scoreItem.innerHTML = `Name: ${score.name} Score: ${score.score}`;
+    scoreItem.setAttribute("class", "m-2 text-base");
+    highscoresList.appendChild(scoreItem);
+  }
+  highscoreDiv.innerHTML = "";
 }
 
 // stores HighScores to local storage
@@ -193,8 +202,10 @@ function answerButtons(event) {
   let element = event.target;
   if (element.matches("button")) {
     if (choice === answer) {
+      resultsDiv.setAttribute("class", "text-green-600 text-lg");
       resultsDiv.textContent = "CORRECT!";
     } else {
+      resultsDiv.setAttribute("class", "text-red-600 text-lg");
       resultsDiv.textContent = "WRONG!";
       secondsLeft -= 10;
     }
@@ -219,29 +230,6 @@ function quizTimer() {
     }
   }, 1000);
 }
-
-// view high scores page button thing
-// highScoresPage.addEventListener("click", function () {
-//   let viewScoresDiv = document.getElementsByClassName("viewHighScores");
-//   let showHighScores = document.createElement("h2");
-//   showHighScores.textContent = "hello!";
-//   viewScoresDiv.append(showHighScores);
-// });
-
-// function pasteHighScores() {
-//   let hs = window.open("../highscores.html");
-//   hs.onload = function () {
-//     let showHighScores = document.createElement("h2");
-//     showHighScores.textContent = "hello!";
-//     viewScoresDiv.append(showHighScores);
-//   };
-// }
-
-// page.addEventListener("DOMContentLoaded", () => {
-//   // Now we can access the #test element on the other page
-//   const testDiv = page.document.getElementById("test");
-//   testDiv.textContent = "Hello world!";
-// });
 
 startQuizButton.addEventListener("click", startQuiz);
 qDiv.addEventListener("click", answerButtons);
