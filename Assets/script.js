@@ -4,8 +4,8 @@ let saveScore = document.querySelector("#saveInitials");
 let qDiv = document.querySelector("#questions");
 let rDiv = document.querySelector("#reset");
 let highscoreForm = document.querySelector("#hsForm");
-let highscoreDiv = document.querySelector("#viewHighScores")
-let highscoresList = document.querySelector("#highscoreList")
+let highscoreDiv = document.querySelector("#viewHighScores");
+let highscoresList = document.querySelector("#highscoreList");
 let timerEl = document.querySelector(".timer");
 let resultsDiv = document.querySelector("#results");
 let secondsLeft = 60;
@@ -79,21 +79,25 @@ function createButtons(i) {
 
     let buttonOne = document.createElement("button");
     buttonOne.textContent = quizQuestions[i].choice1;
+    buttonOne.setAttribute("class", "m-2 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow");
     buttonOne.dataset.answer = quizQuestions[i].answer;
     qDiv.appendChild(buttonOne);
 
     let buttonTwo = document.createElement("button");
     buttonTwo.textContent = quizQuestions[i].choice2;
+    buttonTwo.setAttribute("class", "m-2 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow");
     buttonTwo.dataset.answer = quizQuestions[i].answer;
     qDiv.appendChild(buttonTwo);
 
     let buttonThree = document.createElement("button");
     buttonThree.textContent = quizQuestions[i].choice3;
+    buttonThree.setAttribute("class", "m-2 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow");
     buttonThree.dataset.answer = quizQuestions[i].answer;
     qDiv.appendChild(buttonThree);
 
     let buttonFour = document.createElement("button");
     buttonFour.textContent = quizQuestions[i].choice4;
+    buttonFour.setAttribute("class", "m-2 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow");
     buttonFour.dataset.answer = quizQuestions[i].answer;
     qDiv.appendChild(buttonFour);
   }
@@ -104,25 +108,29 @@ function gameOver() {
   alert("Game over!");
   // play again button
   let playAgain = document.createElement("button");
+  playAgain.setAttribute("class", "m-2 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow");
   playAgain.textContent = "Play again?";
   rDiv.appendChild(playAgain);
 
   let highscoreText = document.createElement("h3");
+  highscoreText.setAttribute("class", "text-lg font-bold");
   highscoreText.textContent = "Enter your highscore!";
   highscoreForm.appendChild(highscoreText);
 
   // name input
   let saveName = document.createElement("input");
-  saveName.setAttribute("id", "initials");
+  saveName.setAttribute("class", "initials m-2 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow");
   highscoreForm.appendChild(saveName);
 
   // save button
   let saveButton = document.createElement("button");
+  saveButton.setAttribute("class", "text-base m-2 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow");
   saveButton.textContent = "Save Score";
   highscoreForm.appendChild(saveButton);
 
   // view High Scores
   let seeHighscores = document.createElement("button");
+  seeHighscores.setAttribute("class", "text-base m-2 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow");
   seeHighscores.textContent = "View All Highscores";
   highscoreDiv.appendChild(seeHighscores);
 
@@ -141,7 +149,7 @@ function submitScore(event) {
   let element = event.target;
   if (element.matches("button")) {
     console.log(event);
-    let name = document.querySelector("#initials").value;
+    let name = document.querySelector(".initials").value;
     let score = secondsLeft;
     let userScore = {
       name: name,
@@ -159,11 +167,10 @@ function submitScore(event) {
 }
 
 // View Highscores function
-function viewHighScores(){
-  highScores.forEach(score => {
-    highscoresList.appendChild(score)
+function viewHighScores() {
+  highScores.forEach((score) => {
+    highscoresList.appendChild(score);
   });
- 
 }
 
 // stores HighScores to local storage
@@ -241,4 +248,3 @@ qDiv.addEventListener("click", answerButtons);
 highscoreForm.addEventListener("click", submitScore);
 highscoreDiv.addEventListener("click", viewHighScores);
 init();
-
